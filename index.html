@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dialogue Wiki</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <!-- Các nút chọn Act -->
+        <div class="nav-buttons">
+            <button onclick="toggleAct(act1Data, 'act1', this)">Act 1</button>
+            <button onclick="toggleAct(act2Data, 'act2', this)">Act 2</button>
+        </div>
+
+        <!-- Khu vực hiển thị danh sách hội thoại -->
+        <div id="dialogue-container">
+            <!-- Dữ liệu sẽ được JS bơm vào đây -->
+        </div>
+    </div>
+
+    <!-- Nhúng các file JS -->
+    <script src="js/core.js"></script>
+    <script src="js/act1.js"></script>
+    <script src="js/act2.js"></script>
+
+    <script>
+        let currentActiveAct = null; // Biến lưu trạng thái Act đang mở
+
+        function toggleAct(actData, actName, buttonElement) {
+            const container = document.getElementById('dialogue-container');
+
+            // Nếu bấm vào nút đang active -> tắt đi (ẩn nội dung, bỏ sáng nút)
+            if (currentActiveAct === actName) {
+                container.innerHTML = ""; // Xóa nội dung khung chat
+                buttonElement.classList.remove('active');
+                currentActiveAct = null;
+            } else {
+                // Nếu đang mở act khác, reset nút cũ trước
+                const allButtons = document.querySelectorAll('.nav-buttons button');
+                allButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Render nội dung act mới bằng startAct và làm sáng nút được bấm
+                startAct(actData);
+                buttonElement.classList.add('active');
+                currentActiveAct = actName;
+            }
+        }
+
+        // Mặc định tự động load Act 1 khi vừa mở web
+        window.onload = function() {
+            const act1Btn = document.querySelector('.nav-buttons button');
+            toggleAct(act1Data, 'act1', act1Btn);
+        };
+    </script>
+</body>
+</html>
